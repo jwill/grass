@@ -67,7 +67,11 @@ class BlogPlugin {
 
 	def beforeWrite(page) {
 		if (page.content.contains(INDEX_TAG)) {
-			page.content = page.content.replace(INDEX_TAG, applyTemplate('blog/index.html', '', newBinding(posts: posts)).toString())
+			if (config.indexPage.equals("full")) {
+				page.content = page.content.replace(INDEX_TAG, applyTemplate('blog/index.html', '', newBinding(posts: posts)).toString())
+			} else { 
+				page.content = page.content.replace(INDEX_TAG, applyTemplate('blog/index.html', '', newBinding(posts: posts.take(10))).toString())
+			}
 		}
 		if (page.content.contains(RECENT_TAG)) {
 			page.content = page.content.replace(RECENT_TAG, applyTemplate('blog/recent.html', '', newBinding(posts: recent)).toString())

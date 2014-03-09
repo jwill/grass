@@ -9,12 +9,14 @@ class Page {
 	Date date
 	String summary
 	String content
+	String description
 }
 
 // command line parsing
 def cli = new CliBuilder(usage: 'groovy grass -s "source" -d "destination"')
 cli.s(longOpt: 'source', args: 1, required: true, 'source')
 cli.d(longOpt: 'destination', args: 1, required: true, 'destination')
+cli.i(longOpt: 'index', args: 1, required: false, 'index')
 
 // parse options
 opt = cli.parse(args)
@@ -27,6 +29,8 @@ this.metaClass.mixin GrassMixin
 config = loadConfig()
 config.source = new File("${opt.s}")
 config.destination = new File("${opt.d}")
+config.indexPage = opt.i ?: 'full'
+println config.indexPage
 config.destination.mkdirs()
 config.pages = []
 config.plugins = []

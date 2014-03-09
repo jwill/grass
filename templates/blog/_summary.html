@@ -1,7 +1,7 @@
-<article>
+<article itemscope itemtype="http://schema.org/BlogPosting">
 	<header>
 		<p class="meta">
-			<time datetime="${isodate(post.date)}">${prettydate(post.date)}</time>
+			<time datetime="${isodate(post.date)}" itemprop="datePublished">${prettydate(post.date)}</time>
 		</p>
 		<h1>${post.title}</h1>
 	</header>
