@@ -1,4 +1,7 @@
-class GoogleAnalyticsPlugin {
+package grass.plugins
+import grass.*
+
+class GoogleAnalyticsPlugin implements GrassMixin{
 	def GA_TAG = /<ga:tracker\/>/
 
 	def config

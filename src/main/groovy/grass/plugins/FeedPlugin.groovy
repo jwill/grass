@@ -1,4 +1,8 @@
-class FeedPlugin {
+package grass.plugins
+
+import grass.*
+
+class FeedPlugin implements GrassMixin {
 	def LINKS_TAG = /<feed:links\/>/
 
 	def config

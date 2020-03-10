@@ -1,4 +1,7 @@
-class LinksPlugin {
+package grass.plugins
+
+import grass.*
+class LinksPlugin implements GrassMixin {
 	def config
 
 	private createLinkToPage(Page target, boolean absolute) {

@@ -1,4 +1,7 @@
-class GistPlugin {
+package grass.plugins
+import grass.*
+
+class GistPlugin implements GrassMixin{
 	def config
 
 	def setupBinding(binding) {
