@@ -26,6 +26,7 @@ trait Events {
 trait GrassMixin extends Events {
 
     def eventBus = App.rootEventBus
+
 	  def addPage(Map data) {
 		    addPage(new Page(data))
 	  }
@@ -70,7 +71,6 @@ trait GrassMixin extends Events {
     }
 
 
-
 	  def addPage(Page page) {
 		    def engine = new SimpleTemplateEngine()
 		    // preprocess page
@@ -105,8 +105,20 @@ trait GrassMixin extends Events {
 
 	  def applyTemplate(page, binding) {
 		    if (!page.out || !page.template) { return }
-		    page.content = applyTemplate(page.template, page.content, binding)
+
+        def templates = new BlogTemplates(config)
+        if (page.template.equals("blog/post")) {
+            page.content = templates.post(page)
+        }
+
+        if (page.template.equals("index")) {
+            page.content = templates.indexPage(page)
+        }
+
+        // Mostly Old template system
+		    //page.content = applyTemplate(page.template, page.content, binding)
 	  }
+
 
 	  def applyTemplate(id, content, binding) {
 		    def template = findTemplate(id, binding)

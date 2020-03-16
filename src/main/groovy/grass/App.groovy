@@ -16,7 +16,10 @@ class App implements GrassMixin{
     def plugins
     def config
 
+    static rootTemplates
+
     static rootEventBus = new EventBus()
+    static rootConfig
 
     public setupApp() {
         cli.s(longOpt: 'source', args: 1, required: true, 'source')
@@ -56,7 +59,7 @@ class App implements GrassMixin{
         config.indexPage = options.i ?: 'full'
         config.destination.mkdirs()
         config.pages = []
-        config.plugins = []
+        config.plugins = [:]
     }
 
     def loadConfig() {
@@ -69,13 +72,14 @@ class App implements GrassMixin{
 	      if (local.exists()) {
 		        config.merge(new ConfigSlurper().parse(local.toURL()))
 	      }
+        rootConfig = config
     }
 
     def loadPlugins() {
         def enabled = config?.plugins?.enabled ?: []
 	      def disabled = config?.plugins?.disabled ?: []
 
-        def classLoader =ClassLoader.getSystemClassLoader()
+        def classLoader = ClassLoader.getSystemClassLoader()
         // Look for grass on the class path 
         def url = classLoader.getSystemResource("grass")
         def pluginNames = [:]
@@ -97,10 +101,10 @@ class App implements GrassMixin{
                 }
                 eventBus.register(instance)
 
-                config.plugins << instance
+                config.plugins[it.key] = instance
             }
         }
-
+        rootTemplates = new BlogTemplates(config)
     }
 
     def loadPages() {

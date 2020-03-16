@@ -1,13 +1,20 @@
 <html>
 <head>
 	${include('/_head.html')}
+	<title>James Williams</title>
+	<link rel="canonical" href="https://jameswilliams.be/blog">
 </head>
 <body>
-	<section id="content">
-		<blog:index/>
+
+  ${include('/_navBar-infogram.html')}
+<main>
+	<div class="container">
+    <div class="row">
+		 <blog:index/>
+
+    </div>
 		${include('/_footer.html')}
-	</section>
-	${include('/_sidebar.html')}
-	<ga:tracker/>
+	</div>
+</main>
 </body>
 </html>

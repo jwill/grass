@@ -4,7 +4,7 @@ import grass.*
 class LinksPlugin implements GrassMixin {
 	def config
 
-	private createLinkToPage(Page target, boolean absolute) {
+	def createLinkToPage(Page target, boolean absolute) {
 		createLinkToUrl(target.out, absolute)
 	}
 

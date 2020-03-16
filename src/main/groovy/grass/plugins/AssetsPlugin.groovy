@@ -12,23 +12,48 @@ class AssetsPlugin implements GrassMixin{
 	  }
 
 	  def setupBinding(binding) {
+        binding.findAssetPath = { String name ->
+            // returns parent path or null
+            return config?.paths?.assets.find {
+                def global = new File(config.source, it)
+
+                global.exists() && new File(global, name).exists()
+            }
+        }
+
 		    binding.createLinkToAsset = { String name, boolean absolute ->
 			      // check if the asset exists
-			      def asset = config?.paths?.assets?.find { path ->
-				        def global = new File(path)
-				        if (global.exists() && new File(global, name).exists()) {
-					          return path
-				        }
 
-				        def local = new File(config.source, path)
-				        if (local.exists() && new File(local, name)) {
-					          return path
-				        }
+            def asset = binding.findAssetPath(name)
 
-				        return null
-			      }
-			      binding.createLinkToUrl(asset ? "/${asset}/${name}" : "${name}", absolute)
+            if (asset != null)
+                binding.createLinkToUrl(asset ? "/${asset}/${name}" : "${name}", absolute)
 		    }
+
+        binding.image = {String filename, String altDesc ->
+            def path = binding.createLinkToAsset(filename, false)
+            if (path == null)
+                ""
+            else {
+                """<div>
+            <img src=\"/blog/${path}\" alt=\"${altDesc}\">
+            <center><span>${altDesc}</span></center>
+            </div>
+            """
+            }
+        }
+
+        binding.snippet = { String name ->
+            def path = binding.findAssetPath(name)
+            if (path == null)
+                ""
+            else {
+                def directory = new File(config.source, path)
+                def assetPath = new File(directory, name)
+                "<pre><code>${assetPath.getText()}</code></pre>"
+            }
+
+        }
 	  }
 
 	  def afterIndex(payload) {
